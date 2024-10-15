@@ -12,11 +12,11 @@ class
 create
     make
 
-feature {NONE} -- Initialization
+feature  -- Initialization
     remaining_nr_of_cards: INTEGER
     --number_of_wild_cards: INTEGER
     list_of_cards: ARRAY[CARD]
-    card_to_be_removed: CARD
+    card_removed: detachable CARD
     -- face: BOOLEAN
 
      make
@@ -37,7 +37,7 @@ feature {NONE} -- Initialization
 
 		    create rand_gen_wrap.make
 			create list_of_cards.make_empty
-			create card_to_be_removed.make("red", 1)
+
             i:=1
             from
             number := 0
@@ -82,21 +82,18 @@ feature {NONE} -- Initialization
         end
 
     take_card
+    	require
+    		remaining_nr_of_cards >=1
         do
-            card_to_be_removed:= list_of_cards[list_of_cards.upper]
+            card_removed:= list_of_cards[list_of_cards.upper]
             list_of_cards.remove_tail(1)
-            remaining_nr_of_cards:= remaining_nr_of_cards -1
+            remaining_nr_of_cards:= remaining_nr_of_cards - 1
+        ensure
+        	remaining_nr_of_cards = old remaining_nr_of_cards - 1
         end
 
-    get_card: CARD
-        do
-            Result:= card_to_be_removed
-        end
 
-    get_nr_cards: INTEGER
-        do
-            Result:= remaining_nr_of_cards
-        end
+
 
 
     out :STRING

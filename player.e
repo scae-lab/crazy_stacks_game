@@ -20,8 +20,9 @@ feature {NONE} -- Initialization
     stack_green: ARRAY[CARD]
     stack_blue: ARRAY[CARD]
     stack_orange: ARRAY[CARD]
-    want_card: BOOLEAN
-    card_to_be_discarded: CARD
+    want_card_from_deck: BOOLEAN
+    want_card_from_discard_pile: BOOLEAN
+    card_to_be_discarded: detachable CARD
     --a_card: CARD
 
     make (a_name: STRING) --; a_number: INTEGER )
@@ -35,23 +36,24 @@ feature {NONE} -- Initialization
 			create stack_green.make_empty
 			create stack_orange.make_empty
 			create stack_blue.make_empty
-			create card_to_be_discarded.make ("red",1)
-			--create a_card.make ("red", 1,False)
+
+
         end
 
-    get_want_card: BOOLEAN
+
+    set_want_card_deck(val_bool: BOOLEAN)
         do
-            Result:= want_card
+            want_card_from_deck:= val_bool
         end
 
-    set_want_card(val_bool: BOOLEAN)
+	set_want_card_discard_pile(val_bool: BOOLEAN)
         do
-            want_card:= val_bool
+            want_card_from_discard_pile:= val_bool
         end
 
     take_card(a_card: CARD)
         do
-            cards_in_hand.extend(a_card)
+            cards_in_hand.force(a_card, cards_in_hand.capacity + 1)
             want_card:= False
         end
 
@@ -104,15 +106,12 @@ feature {NONE} -- Initialization
             index <= cards_in_hand.capacity
 
         do
-            card_to_be_discarded:= cards_in_hand[index]
+            card_to_be_discarded := cards_in_hand[index]
             card_to_be_discarded.set_face(False)
             cards_in_hand.prune(cards_in_hand[index])
         end
 
-    get_card_to_discard: CARD
-        do
-            Result:= card_to_be_discarded
-        end
+
 
     get_sum_points: INTEGER
         require
