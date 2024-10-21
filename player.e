@@ -55,7 +55,8 @@ feature  -- Initialization
     take_card(a_card: CARD)
         do
             cards_in_hand.force(a_card, cards_in_hand.capacity + 1)
-            want_card:= False
+            want_card_from_discard_pile:= False
+            want_card_from_deck:= False
         end
 
     play_card(index: INTEGER)
@@ -71,7 +72,7 @@ feature  -- Initialization
             if a_card.get_color = 1 then
             	if a_card.number = 0 then
             		if stack_red.capacity = 0 then
-            			stack_red.force (a_card, stack_red.capacty +1)
+            			stack_red.force (a_card, stack_red.capacity +1)
             		else
             			print("You can only play wildcards at the beginning of the stack")
             		end
@@ -121,11 +122,13 @@ feature  -- Initialization
     discard(index: INTEGER)
         require
             index <= cards_in_hand.capacity and index >= 0
-
+		local
+			a_card:CARD
         do
-            card_to_be_discarded := cards_in_hand[index]
-            card_to_be_discarded.set_face(False)
+            a_card := cards_in_hand[index]
+            a_card.set_face(True)
             cards_in_hand.prune(cards_in_hand[index])
+            card_to_be_discarded:=a_card
 
         end
 
@@ -146,7 +149,7 @@ feature  -- Initialization
             total_sum := 0
             multiplier := 1
 
-            if stack_red.capacity = 0 and stack_green.capacity = 0 and stack_blue.capacity = 0 stack_orange.capacity = 0 then
+            if stack_red.capacity = 0 and stack_green.capacity = 0 and stack_blue.capacity = 0 and stack_orange.capacity = 0 then
             	Result:= total_sum
             end
 
@@ -217,7 +220,46 @@ feature  -- Initialization
          	i := i+1
          end
 
-        Result := Result + "}" 
+        Result := Result + "}"
+
+        Result := Result + "blue stack: {"
+        from
+         	i:= stack_blue.lower
+         until
+         	i> stack_blue.upper
+         loop
+         	Result:= Result + stack_blue[i].out
+         	i := i+1
+         end
+
+        Result:= Result + "}"
+
+        Result := Result + "green stack: {"
+        from
+         	i:= stack_green.lower
+         until
+         	i> stack_green.upper
+         loop
+         	Result:= Result + stack_green[i].out
+         	i := i+1
+         end
+
+        Result:= Result + "}"
+
+        Result := Result + "orange stack: {"
+        from
+         	i:= stack_orange.lower
+         until
+         	i> stack_orange.upper
+         loop
+         	Result:= Result + stack_orange[i].out
+         	i := i+1
+         end
+
+         Result:= Result + "}"
+
+        Result:= Result + "current points: " + get_sum_points.out
+
      end
 
 
