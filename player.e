@@ -8,11 +8,12 @@ note
 
 class
     PLAYER
+    inherit ANY redefine out end
 
 create
     make
 
-feature {NONE} -- Initialization
+feature  -- Initialization
     name: STRING
     --number: INTEGER
     cards_in_hand: ARRAY[CARD]
@@ -70,52 +71,69 @@ feature {NONE} -- Initialization
             if a_card.get_color = 1 then
             	if a_card.number = 0 then
             		if stack_red.capacity = 0 then
-            			stack_red.extend (a_card)
+            			stack_red.force (a_card, stack_red.capacty +1)
             		else
             			print("You can only play wildcards at the beginning of the stack")
             		end
             	else
-            		stack_red.extend(a_card)
+            		stack_red.force(a_card, stack_red.capacity + 1)
             	end
             end
 
 			if a_card.get_color = 2 then
             	if a_card.number = 0 then
             		if stack_green.capacity = 0 then
-            			stack_green.extend (a_card)
+            			stack_green.force(a_card, stack_green.capacity + 1)
             		else
             			print("You can only play wildcards at the beginning of the stack")
             		end
             	else
-            		stack_green.extend(a_card)
+            		stack_green.force(a_card, stack_green.capacity + 1)
             	end
             end
 
-
-            if a_card.get_color = 3 then
-                stack_blue.extend(a_card)
+			if a_card.get_color = 3 then
+            	if a_card.number = 0 then
+            		if stack_blue.capacity = 0 then
+            			stack_blue.force(a_card, stack_blue.capacity + 1)
+            		else
+            			print("You can only play wildcards at the beginning of the stack")
+            		end
+            	else
+            		stack_blue.force(a_card, stack_blue.capacity + 1)
+            	end
             end
 
             if a_card.get_color = 4 then
-                stack_orange.extend(a_card)
+            	if a_card.number = 0 then
+            		if stack_orange.capacity = 0 then
+            			stack_orange.force(a_card, stack_orange.capacity + 1)
+            		else
+            			print("You can only play wildcards at the beginning of the stack")
+            		end
+            	else
+            		stack_orange.force(a_card, stack_orange.capacity + 1)
+            	end
             end
+
         end
 
     discard(index: INTEGER)
         require
-            index <= cards_in_hand.capacity
+            index <= cards_in_hand.capacity and index >= 0
 
         do
             card_to_be_discarded := cards_in_hand[index]
             card_to_be_discarded.set_face(False)
             cards_in_hand.prune(cards_in_hand[index])
+
         end
 
 
 
     get_sum_points: INTEGER
         require
-        	stack_red.capacity > 1
+
 
         local
             partial_sum: INTEGER
@@ -127,6 +145,10 @@ feature {NONE} -- Initialization
             partial_sum := 0
             total_sum := 0
             multiplier := 1
+
+            if stack_red.capacity = 0 and stack_green.capacity = 0 and stack_blue.capacity = 0 stack_orange.capacity = 0 then
+            	Result:= total_sum
+            end
 
             if stack_red[1].number = 0 then
                 multiplier := 2
@@ -176,13 +198,27 @@ feature {NONE} -- Initialization
             end
             partial_sum:= multiplier*partial_sum
             total_sum:= total_sum + partial_sum
-            partial_sum:= 0
-            multiplier:= 1
+
 
             Result:= total_sum
         end
 
-     --out :STRING
+     out :STRING
+     local
+     	i: INTEGER
+     do
+         Result:= "{"+name+"}"+"{"
+         from
+         	i:= cards_in_hand.lower
+         until
+         	i> cards_in_hand.upper
+         loop
+         	Result:= Result + cards_in_hand[i].out
+         	i := i+1
+         end
+
+        Result := Result + "}" 
+     end
 
 
 end
