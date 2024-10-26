@@ -81,13 +81,17 @@ feature  -- Initialization
             	correct_nr_of_cards: remaining_nr_of_cards = 28
         end
 
-    take_card
-    	require
-    		remaining_nr_of_cards >=1
+    take_card: CARD
+		local
+			aux_card: CARD
+    	--require
+    		--remaining_nr_of_cards >=1
         do
-            card_removed:= list_of_cards[list_of_cards.upper]
+            aux_card:= list_of_cards[list_of_cards.upper]
+           	Result:= aux_card
             list_of_cards.remove_tail(1)
             remaining_nr_of_cards:= remaining_nr_of_cards - 1
+
         ensure
         	remaining_nr_of_cards = old remaining_nr_of_cards - 1
         end

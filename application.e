@@ -14,14 +14,11 @@ create
 
 feature {NONE} -- Initialization
 
-	our_deck: DECK
-	player1: PLAYER
+	game_crazy_stacks: GAME
 	make
 			-- Run application.
 		do
-			create our_deck.make
-			print(our_deck.out)
-			create player1.make("P1")
+			create game_crazy_stacks.make
 
 		end
 
