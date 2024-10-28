@@ -258,7 +258,7 @@ feature  -- Initialization
 
          Result:= Result + "}"
 
-        Result:= Result + "current points: " + get_sum_points.out
+        --Result:= Result + "current points: " + get_sum_points.out
 
      end
 

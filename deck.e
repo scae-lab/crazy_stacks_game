@@ -87,10 +87,10 @@ feature  -- Initialization
     	--require
     		--remaining_nr_of_cards >=1
         do
-            aux_card:= list_of_cards[list_of_cards.upper]
-           	Result:= aux_card
+            aux_card := list_of_cards[list_of_cards.upper]
+           	Result := aux_card
             list_of_cards.remove_tail(1)
-            remaining_nr_of_cards:= remaining_nr_of_cards - 1
+            remaining_nr_of_cards := remaining_nr_of_cards - 1
 
         ensure
         	remaining_nr_of_cards = old remaining_nr_of_cards - 1
