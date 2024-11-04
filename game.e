@@ -17,9 +17,13 @@ feature
 	make
 		local
 			i: INTEGER
+			currrent_player: PLAYER
+	
 		do
 			create player1.make("Adel")
 			create player2.make("Catalin")
+			-- card distribution
+			
 			create game_deck.make
 			create game_discard_pile.make
 			from
@@ -33,6 +37,21 @@ feature
 			end
 			print("%N" + player1.out + "%N")
 			print("%N" + player2.out + "%N")
+
+			currrent_player := player1
+			from
+			until
+				game_deck.remaining_nr_of_cards = 0
+			loop
+				
+				currrent_player.take_card(game_deck.take_card)
+				--change the player
+				if currrent_player=player1 then
+					currrent_player := player2
+				else
+					currrent_player := player1
+				end
+			end
 		end
 
 
