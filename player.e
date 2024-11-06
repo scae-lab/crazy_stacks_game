@@ -8,7 +8,8 @@ note
 
 class
     PLAYER
-    inherit ANY redefine out end
+    inherit 
+        ANY redefine out end
 
 create
     make
@@ -25,8 +26,9 @@ feature  -- Initialization
     want_card_from_discard_pile: BOOLEAN
     card_to_be_discarded: detachable CARD
     --a_card: CARD
+    player_strategy: STRATEGY
 
-    make (a_name: STRING) --; a_number: INTEGER )
+    make (a_name: STRING; a_strategy: STRATEGY) --; a_number: INTEGER )
 
             -- Creation of the player
         do
@@ -38,6 +40,8 @@ feature  -- Initialization
 			create stack_orange.make_empty
 			create stack_blue.make_empty
 
+            player_strategy := a_strategy
+            player_strategy.set_current_player(Current)
 
         end
 
@@ -50,6 +54,13 @@ feature  -- Initialization
 	set_want_card_discard_pile(val_bool: BOOLEAN)
         do
             want_card_from_discard_pile:= val_bool
+        end
+
+    take_turn(game_deck: DECK;game_discard_pile: DISCARD_PILE)
+        do
+            player_strategy.take_turn(game_deck,game_discard_pile)
+        ensure
+            correct_no_of_cards: cards_in_hand.count = 5
         end
 
     take_card(a_card: CARD)

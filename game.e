@@ -17,11 +17,11 @@ feature
 	make
 		local
 			i: INTEGER
-			currrent_player: PLAYER
+			current_player: PLAYER
 	
 		do
-			create player1.make("Adel")
-			create player2.make("Catalin")
+			create player1.make("Adel", create {RANDOM_STRATEGY}.make)
+			create player2.make("Catalin", create {RANDOM_STRATEGY}.make)
 			-- card distribution
 			
 			create game_deck.make
@@ -38,18 +38,18 @@ feature
 			print("%N" + player1.out + "%N")
 			print("%N" + player2.out + "%N")
 
-			currrent_player := player1
+			current_player := player1
 			from
 			until
 				game_deck.remaining_nr_of_cards = 0
 			loop
 				
-				currrent_player.take_card(game_deck.take_card)
+				current_player.take_turn(game_deck,game_discard_pile) -- game_deck or game_discard_pile
 				--change the player
-				if currrent_player=player1 then
-					currrent_player := player2
+				if current_player=player1 then
+					current_player := player2
 				else
-					currrent_player := player1
+					current_player := player1
 				end
 			end
 		end
