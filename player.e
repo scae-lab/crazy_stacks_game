@@ -41,7 +41,6 @@ feature  -- Initialization
 			create stack_blue.make_empty
 
             player_strategy := a_strategy
-            player_strategy.set_current_player(Current)
 
         end
 
@@ -58,7 +57,8 @@ feature  -- Initialization
 
     take_turn(game_deck: DECK;game_discard_pile: DISCARD_PILE)
         do
-            player_strategy.take_turn(game_deck,game_discard_pile)
+            player_strategy.take_turn(game_deck,game_discard_pile,Current)
+            print("%N"+ Current.out+"%N")
         ensure
             correct_no_of_cards: cards_in_hand.count = 5
         end
@@ -127,7 +127,9 @@ feature  -- Initialization
             		stack_orange.force(a_card, stack_orange.capacity + 1)
             	end
             end
-
+        
+        ensure
+            True
         end
 
     discard(index: INTEGER)
@@ -231,7 +233,7 @@ feature  -- Initialization
          	i := i+1
          end
 
-        Result := Result + "}"
+        Result := Result + "}%N"
 
         Result := Result + "blue stack: {"
         from
@@ -243,7 +245,19 @@ feature  -- Initialization
          	i := i+1
          end
 
-        Result:= Result + "}"
+        Result:= Result + "}%N"
+
+        Result := Result + "red stack: {"
+        from
+         	i:= stack_red.lower
+         until
+         	i> stack_red.upper
+         loop
+         	Result:= Result + stack_red[i].out
+         	i := i+1
+         end
+
+        Result:= Result + "}%N"
 
         Result := Result + "green stack: {"
         from
@@ -255,7 +269,7 @@ feature  -- Initialization
          	i := i+1
          end
 
-        Result:= Result + "}"
+        Result:= Result + "}%N"
 
         Result := Result + "orange stack: {"
         from
@@ -267,7 +281,7 @@ feature  -- Initialization
          	i := i+1
          end
 
-         Result:= Result + "}"
+         Result:= Result + "}%N"
 
         --Result:= Result + "current points: " + get_sum_points.out
 

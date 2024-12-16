@@ -46,6 +46,7 @@ feature
 				
 				current_player.take_turn(game_deck,game_discard_pile) -- game_deck or game_discard_pile
 				--change the player
+				print("%N"+game_discard_pile.out+"%N")
 				if current_player=player1 then
 					current_player := player2
 				else

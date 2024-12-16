@@ -1,17 +1,16 @@
 class RANDOM_STRATEGY
-    inherit STRATEGY redefine make end
+    inherit STRATEGY 
 create
     make
 feature
 
     random_generator: RANDOM_GENERATOR_WRAPPER
-    make(a_current_player: PLAYER)
+    make
         do
-            precursor(a_current_player)
             create random_generator.make
         end
 
-    take_turn(game_deck: DECK; game_discard_pile: DISCARD_PILE)
+    take_turn(game_deck: DECK; game_discard_pile: DISCARD_PILE; current_player: PLAYER)
         local
             action: INTEGER
             curr_card: CARD
