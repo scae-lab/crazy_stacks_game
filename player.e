@@ -17,7 +17,7 @@ create
 feature  -- Initialization
     name: STRING
     --number: INTEGER
-    cards_in_hand: ARRAY[CARD]
+    cards_in_hand: ARRAYED_LIST[CARD]
     stack_red: ARRAY[CARD]
     stack_green: ARRAY[CARD]
     stack_blue: ARRAY[CARD]
@@ -34,7 +34,7 @@ feature  -- Initialization
         do
             name := a_name
             --number := a_number
-			create cards_in_hand.make_empty
+			create cards_in_hand.make(0)
 			create stack_red.make_empty
 			create stack_green.make_empty
 			create stack_orange.make_empty
@@ -56,6 +56,8 @@ feature  -- Initialization
         end
 
     take_turn(game_deck: DECK;game_discard_pile: DISCARD_PILE)
+        require
+            correct_no_of_cards: cards_in_hand.count = 5
         do
             player_strategy.take_turn(game_deck,game_discard_pile,Current)
             print("%N"+ Current.out+"%N")
@@ -65,9 +67,7 @@ feature  -- Initialization
 
     take_card(a_card: CARD)
         do
-            cards_in_hand.force(a_card, cards_in_hand.capacity + 1)
-            want_card_from_discard_pile:= False
-            want_card_from_deck:= False
+            cards_in_hand.force(a_card)
         end
 
     play_card(index: INTEGER)

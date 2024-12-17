@@ -33,11 +33,11 @@ feature  -- Initialization
         	card_added: remaining_nr_of_cards = old remaining_nr_of_cards + 1
         end
 
-    take_card
+    take_card: CARD
     	require
     		remaining_nr_of_cards >=1
         do
-            card_removed:= list_of_cards[list_of_cards.upper]
+            Result:= list_of_cards[list_of_cards.upper]
             list_of_cards.remove_tail(1)
             remaining_nr_of_cards:= remaining_nr_of_cards - 1
         ensure
